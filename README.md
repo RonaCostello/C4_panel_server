@@ -15,7 +15,7 @@ If you use a different package manager, then just have a look at the top of the 
 
 For a given gene of interest, identify the orthogroup it belongs to using orthogroup_targetP_files
 
-  grep -r 'AT5G19140' data/orthogroup_sequences/.
+`grep -r 'AT5G19140' data/orthogroup_sequences/.`
 
 #### Add the orthogroups you're interested in to a text file ####
 
@@ -25,8 +25,12 @@ An example list is given - orthogroup_list_example.txt
 
 #### Run the script! Add the orthogroup list file you made after calling the script ####
 
-  python Panel_figure_C4_gene_expression.py your_list_of_orthogroups.txt
+`python Panel_figure_C4_gene_expression.py your_list_of_orthogroups.txt`
 
 #### Figures ####
 
 The figures will save in the figures directory
+
+
+
+If something gets changed and breaks, just let me know as this is a git repo so it can be recovered
