@@ -6,8 +6,8 @@
 
 There is a conda env file in this directory, use this to load up the environment:
 
-  conda create --name your_env_name --file conda_env.txt
-  conda activate your_env_name
+  `conda create --name your_env_name --file conda_env.txt
+  conda activate your_env_name`
 
 If you use a different package manager, then just have a look at the top of the python script to see what you need. This should be okay, the packages are pretty standard ones.
 
