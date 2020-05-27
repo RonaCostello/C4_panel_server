@@ -33,4 +33,4 @@ The figures will save in the figures directory
 
 
 
-If something gets changed and breaks, just let me know as this is a git repo so it can be recovered
+If something gets changed and breaks, just let me know and I can recover a working version from github
