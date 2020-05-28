@@ -19,11 +19,19 @@ For a given gene of interest, identify the orthogroup it belongs to using orthog
 
 #### Add the orthogroups you're interested in to a text file ####
 
-New line for each orthogroup, no headings and put in the same folder as the python script
+If there is only one orthogroup of interest, ignore this step:
+
+Make a text file with each orthogroup on a new line. No headings and put it in the same folder as the python script
 
 An example list is given - orthogroup_list_example.txt
 
 #### Run the script! Add the orthogroup list file you made after calling the script ####
+
+For a single orthogroup:
+
+`python Panel_figure_C4_gene_expression.py OG00XXXXX`
+
+Or for multiple orthogroups:
 
 `python Panel_figure_C4_gene_expression.py your_list_of_orthogroups.txt`
 

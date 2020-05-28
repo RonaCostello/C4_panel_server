@@ -1026,16 +1026,20 @@ def panel_fig(orthogroups, orthogroup_fasta_files, orthogroup_targetP_files):
 
 # In[27]:
 if len(sys.argv) == 1:
-    print('Please specify the orthogroups to be analysed as a command line variable')
+    print('Please specify a orthogroup to be analysed (or a file with a list of orthogroups) as a command line variable')
     print('e.g.')
     print('python Panel_figure_C4_gene_expression.py orthogroup_list_example.txt')
     print('')
     exit()
-orthogroup_list = sys.argv[1]
+
 orthogroups = []
-with open(orthogroup_list) as orthogroup_file:
-    for line in orthogroup_file:
-        orthogroups.append(line.strip())
+if 'OG0' in sys.argv[1]:
+    orthogroups.append(sys.argv[1])
+else:
+    orthogroup_list = sys.argv[1]
+    with open(orthogroup_list) as orthogroup_file:
+        for line in orthogroup_file:
+            orthogroups.append(line.strip())
 
 
 orthogroup_fasta_files = []
