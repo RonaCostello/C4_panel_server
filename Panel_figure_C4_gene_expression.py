@@ -101,7 +101,7 @@ def maize_M_BS_tausta(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colour_dic
         rgb_colours.append(zm_colour_dict[row['Name']])
     tausta_df['colour'] = rgb_colours
 
-    lines = ["-","--","-.",":"]
+    lines = ["-","--","-.",":", (0, (1, 10)), (0, (1, 1)), (0, (5, 10)), (0, (5, 5)), (0, (5, 1)), (0, (3, 10, 1, 10)), (0, (3, 5, 1, 5)), (0, (3, 1, 1, 1)), (0, (3, 5, 1, 5, 1, 5)), (0, (3, 10, 1, 10, 1, 10)), (0, (3, 1, 1, 1, 1, 1))]
     tausta_df.sort_values(by=['colour'], inplace=True)
     tausta_df.reset_index(inplace=True)
     maize_tp_name = []
@@ -187,7 +187,7 @@ def maize_M_BS_denton(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colour_dic
         rgb_colours.append(zm_colour_dict[row['Name']])
     denton_df['colour'] = rgb_colours
 
-    lines = ["-","--","-.",":"]
+    lines = ["-","--","-.",":", (0, (1, 10)), (0, (1, 1)), (0, (5, 10)), (0, (5, 5)), (0, (5, 1)), (0, (3, 10, 1, 10)), (0, (3, 5, 1, 5)), (0, (3, 1, 1, 1)), (0, (3, 5, 1, 5, 1, 5)), (0, (3, 10, 1, 10, 1, 10)), (0, (3, 1, 1, 1, 1, 1))]
     denton_df.sort_values(by=['colour'], inplace=True)
     denton_df.reset_index(inplace=True)
     maize_tp_name = []
@@ -433,7 +433,7 @@ def rice_dev_vancampen(ax, orthogroup, orthogroup_fasta_file, os_colour_dict, ta
         rgb_colours.append(os_colour_dict[row['Name']])
     vancampen_df['colour'] = rgb_colours
 
-    lines = ["-","--","-.",":"]
+    lines = ["-","--","-.",":", (0, (1, 10)), (0, (1, 1)), (0, (5, 10)), (0, (5, 5)), (0, (5, 1)), (0, (3, 10, 1, 10)), (0, (3, 5, 1, 5)), (0, (3, 1, 1, 1)), (0, (3, 5, 1, 5, 1, 5)), (0, (3, 10, 1, 10, 1, 10)), (0, (3, 1, 1, 1, 1, 1))]
     vancampen_df.sort_values(by=['colour'], inplace=True)
     vancampen_df.reset_index(inplace=True)
     gene_tp_name = []
@@ -512,7 +512,7 @@ def arabidopsis_dev_woo(ax, orthogroup, orthogroup_fasta_file, targetp_dict, at_
         rgb_colours.append(at_colour_dict[row['Name']])
     woo_df['colour'] = rgb_colours
 
-    lines = ["-","--","-.",":"]
+    lines = ["-","--","-.",":", (0, (1, 10)), (0, (1, 1)), (0, (5, 10)), (0, (5, 5)), (0, (5, 1)), (0, (3, 10, 1, 10)), (0, (3, 5, 1, 5)), (0, (3, 1, 1, 1)), (0, (3, 5, 1, 5, 1, 5)), (0, (3, 10, 1, 10, 1, 10)), (0, (3, 1, 1, 1, 1, 1))]
     woo_df.sort_values(by=['colour'], inplace=True)
     woo_df.reset_index(inplace=True)
     gene_tp_name = []
@@ -583,7 +583,7 @@ def maize_foliar_husk_wang(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colou
         rgb_colours.append(zm_colour_dict[row['Name']])
     wang_df['colour'] = rgb_colours
 
-    lines = ["-","--","-.",":"]
+    lines = ["-","--","-.",":", (0, (1, 10)), (0, (1, 1)), (0, (5, 10)), (0, (5, 5)), (0, (5, 1)), (0, (3, 10, 1, 10)), (0, (3, 5, 1, 5)), (0, (3, 1, 1, 1)), (0, (3, 5, 1, 5, 1, 5)), (0, (3, 10, 1, 10, 1, 10)), (0, (3, 1, 1, 1, 1, 1))]
     wang_df.sort_values(by=['colour'], inplace=True)
     wang_df.reset_index(inplace=True)
     maize_tp_name = []
