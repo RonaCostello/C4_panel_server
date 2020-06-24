@@ -50,8 +50,8 @@ def maize_M_BS_chang(ax, orthogroup, orthogroup_fasta_file, zm_colour_dict, targ
     cumval_M = 0
     cumval_BS = 0
 
-    sorted_M = chang_df.set_index('Name').sort_values('M_summed_mean')['M_summed_mean']
-    sorted_BS = chang_df.set_index('Name').sort_values('BS_summed_mean')['BS_summed_mean']
+    sorted_M = chang_df.set_index('Name').sort_values('M_summed_mean')['M_mean_TPM']
+    sorted_BS = chang_df.set_index('Name').sort_values('BS_summed_mean')['BS_mean_TPM']
     colours = chang_df.set_index('Name')['colour']
 
     for name, value in sorted_M.iteritems():
@@ -280,8 +280,8 @@ def sbicolor_M_BS_Oxford(ax, orthogroup, orthogroup_fasta_file, sb_colour_dict, 
     cumval_M = 0
     cumval_BS = 0
 
-    sorted_M = sbicolor_df.set_index('Name').sort_values('M_summed_mean')['M_summed_mean']
-    sorted_BS = sbicolor_df.set_index('Name').sort_values('BS_summed_mean')['BS_summed_mean']
+    sorted_M = sbicolor_df.set_index('Name').sort_values('M_summed_mean')['M_mean_TPM']
+    sorted_BS = sbicolor_df.set_index('Name').sort_values('BS_summed_mean')['BS_mean_TPM']
     colours = sbicolor_df.set_index('Name')['colour']
 
     for name, value in sorted_M.iteritems():
@@ -332,8 +332,8 @@ def setaria_M_BS_john(ax, orthogroup, orthogroup_fasta_file, si_colour_dict, tar
     cumval_M = 0
     cumval_BS = 0
 
-    sorted_M = john_df.set_index('Name').sort_values('M_summed_mean')['M_summed_mean']
-    sorted_BS = john_df.set_index('Name').sort_values('BS_summed_mean')['BS_summed_mean']
+    sorted_M = john_df.set_index('Name').sort_values('M_summed_mean')['M_mean_TPM']
+    sorted_BS = john_df.set_index('Name').sort_values('BS_summed_mean')['BS_mean_TPM']
     colours = john_df.set_index('Name')['colour']
 
     for name, value in sorted_M.iteritems():
@@ -384,8 +384,8 @@ def pvirgatum_M_BS_rao(ax, orthogroup, orthogroup_fasta_file, pv_colour_dict, ta
     cumval_M = 0
     cumval_BS = 0
 
-    sorted_M = rao_df.set_index('Name').sort_values('M_summed_mean')['M_summed_mean']
-    sorted_BS = rao_df.set_index('Name').sort_values('BS_summed_mean')['BS_summed_mean']
+    sorted_M = rao_df.set_index('Name').sort_values('M_summed_mean')['M_mean_TPM']
+    sorted_BS = rao_df.set_index('Name').sort_values('BS_summed_mean')['BS_mean_TPM']
     colours = rao_df.set_index('Name')['colour']
 
     for name, value in sorted_M.iteritems():
@@ -673,11 +673,11 @@ def flaveria_C3_C4_Gowick(ax, orthogroup, orthogroup_fasta_file, targetp_dict, a
     cumval_tri = 0
     cumval_bid = 0
 
-    sorted_pri = gowick_df.set_index('Locus').sort_values('F_pringlei_summed_rpm')['F_pringlei_summed_rpm']
-    sorted_rob = gowick_df.set_index('Locus').sort_values('F_robusta_summed_rpm')['F_robusta_summed_rpm']
-    sorted_ram = gowick_df.set_index('Locus').sort_values('F_ramosissima_summed_rpm')['F_ramosissima_summed_rpm']
-    sorted_tri = gowick_df.set_index('Locus').sort_values('F_trinervia_summed_rpm')['F_trinervia_summed_rpm']
-    sorted_bid = gowick_df.set_index('Locus').sort_values('F_bidentis_summed_rpm')['F_bidentis_summed_rpm']
+    sorted_pri = gowick_df.set_index('Locus').sort_values('F_pringlei_summed_rpm')['F_pringlei_rpm']
+    sorted_rob = gowick_df.set_index('Locus').sort_values('F_robusta_summed_rpm')['F_robusta_rpm']
+    sorted_ram = gowick_df.set_index('Locus').sort_values('F_ramosissima_summed_rpm')['F_ramosissima_rpm']
+    sorted_tri = gowick_df.set_index('Locus').sort_values('F_trinervia_summed_rpm')['F_trinervia_rpm']
+    sorted_bid = gowick_df.set_index('Locus').sort_values('F_bidentis_summed_rpm')['F_bidentis_rpm']
 
     colours = gowick_df.set_index('Locus')['colour']
 
@@ -739,8 +739,8 @@ def gynandropsis_M_BS_Aubry(ax, orthogroup, orthogroup_fasta_file, targetp_dict,
     cumval_M = 0
     cumval_BS = 0
 
-    sorted_M = aubry_df.set_index('Accession').sort_values('M_summed_mean')['M_summed_mean']
-    sorted_BS = aubry_df.set_index('Accession').sort_values('BS_summed_mean')['BS_summed_mean']
+    sorted_M = aubry_df.set_index('Accession').sort_values('M_summed_mean')['Mean M']
+    sorted_BS = aubry_df.set_index('Accession').sort_values('BS_summed_mean')['Mean BS']
     colours = aubry_df.set_index('Accession')['colour']
 
     for name, value in sorted_M.iteritems():
