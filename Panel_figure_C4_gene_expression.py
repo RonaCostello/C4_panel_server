@@ -130,14 +130,6 @@ def maize_M_BS_tausta(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colour_dic
     ax1.get_xaxis().set_major_locator(mticks.LinearLocator(numticks=N))
     ax2.get_xaxis().set_major_locator(mticks.LinearLocator(numticks=N))
 
-    ax1.set_ylim(ymin=0)
-    ax2.set_ylim(ymin=0)
-
-    if ax1.get_ylim() <= ax2.get_ylim():
-        ax1.set_ylim(ax2.get_ylim())
-    else:
-        ax2.set_ylim(ax1.get_ylim())
-
     ax1.spines['top'].set_visible(False)
     ax2.spines['right'].set_visible(False)
     ax2.spines['top'].set_visible(False)
@@ -215,14 +207,6 @@ def maize_M_BS_denton(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colour_dic
     ax2.set_xticklabels(['0', '4', '8', '12', '16'])
     ax1.get_xaxis().set_major_locator(mticks.LinearLocator(numticks=N))
     ax2.get_xaxis().set_major_locator(mticks.LinearLocator(numticks=N))
-
-    ax1.set_ylim(ymin=0)
-    ax2.set_ylim(ymin=0)
-
-    if ax1.get_ylim() <= ax2.get_ylim():
-        ax1.set_ylim(ax2.get_ylim())
-    else:
-        ax2.set_ylim(ax1.get_ylim())
 
     ax1.spines['top'].set_visible(False)
     ax2.spines['right'].set_visible(False)
@@ -613,14 +597,6 @@ def maize_foliar_husk_wang(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colou
     ax1.get_xaxis().set_major_locator(mticks.LinearLocator(numticks=N))
     ax2.get_xaxis().set_major_locator(mticks.LinearLocator(numticks=N))
 
-    ax1.set_ylim(ymin=0)
-    ax2.set_ylim(ymin=0)
-
-    if ax1.get_ylim() <= ax2.get_ylim():
-        ax1.set_ylim(ax2.get_ylim())
-    else:
-        ax2.set_ylim(ax1.get_ylim())
-
     ax1.spines['top'].set_visible(False)
     ax2.spines['right'].set_visible(False)
     ax2.spines['top'].set_visible(False)
@@ -959,19 +935,19 @@ def panel_fig(orthogroups, orthogroup_fasta_files, orthogroup_targetP_files):
 
 
         f_ax1_1 = fig.add_subplot(spec[0, 0])
-        f_ax1_3 = fig.add_subplot(spec[0,2])
-        f_ax1_4 = fig.add_subplot(spec[0,3])
-        f_ax1_5 = fig.add_subplot(spec[0,4])
-        f_ax1_6 = fig.add_subplot(spec[0,5])
+        f_ax1_3 = fig.add_subplot(spec[0,2], sharey=f_ax1_1)
+        f_ax1_4 = fig.add_subplot(spec[0,3], sharey=f_ax1_1)
+        f_ax1_5 = fig.add_subplot(spec[0,4], sharey=f_ax1_1)
+        f_ax1_6 = fig.add_subplot(spec[0,5], sharey=f_ax1_1)
 
-        f_ax2_1 = fig.add_subplot(spec[1, 0])
-        f_ax2_3 = fig.add_subplot(spec[1, 2])
-        f_ax2_5 = fig.add_subplot(spec[1, 4])
+        f_ax2_1 = fig.add_subplot(spec[1, 0], sharey=f_ax1_1)
+        f_ax2_3 = fig.add_subplot(spec[1, 2], sharey=f_ax1_1)
+        f_ax2_5 = fig.add_subplot(spec[1, 4], sharey=f_ax1_1)
 
-        f_ax3_1 = fig.add_subplot(spec[2, 0])
-        f_ax3_3 = fig.add_subplot(spec[2, 2])
-        f_ax3_5 = fig.add_subplot(spec[2, 4])
-        f_ax3_6 = fig.add_subplot(spec[2, 5])
+        f_ax3_1 = fig.add_subplot(spec[2, 0], sharey=f_ax1_1)
+        f_ax3_3 = fig.add_subplot(spec[2, 2], sharey=f_ax1_1)
+        f_ax3_5 = fig.add_subplot(spec[2, 4], sharey=f_ax1_1)
+        f_ax3_6 = fig.add_subplot(spec[2, 5], sharey=f_ax1_1)
 
         f_ax4_1 = fig.add_subplot(spec[3,0:2])
         f_ax4_4 = fig.add_subplot(spec[3,3])
@@ -983,10 +959,8 @@ def panel_fig(orthogroups, orthogroup_fasta_files, orthogroup_targetP_files):
         plt.setp([f_ax1_1], title='Maize (Chang et al 2012)')
 
         maize_M_BS_tausta(f_ax1_3, f_ax1_4, orthogroups[i], orthogroup_fasta_files[i], zm_colour_dict, targetp_dict)
-        plt.setp(f_ax1_4.get_yticklabels(), visible=False)
 
         maize_M_BS_denton(f_ax1_5, f_ax1_6, orthogroups[i], orthogroup_fasta_files[i], zm_colour_dict, targetp_dict)
-        plt.setp(f_ax1_6.get_yticklabels(), visible=False)
 
         sbicolor_M_BS_Oxford(f_ax2_1, orthogroups[i], orthogroup_fasta_files[i], sb_colour_dict, targetp_dict)
         plt.setp([f_ax2_1], title='Sorghum (Oxford 2016)')
@@ -1013,6 +987,16 @@ def panel_fig(orthogroups, orthogroup_fasta_files, orthogroup_targetP_files):
 
         C3_v_C4_boxplot(f_ax5_1, orthogroup_fasta_files[i])
         plt.setp([f_ax5_1], title='Expression across selected C3 and C4 dicots (TPMs summed for each arabidopsis gene in orthogroup)')
+
+        for a in fig.axes:
+            a.tick_params(
+            axis='y',           # changes apply to the x-axis
+            which='both',       # both major and minor ticks are affected
+            labelleft=True)
+
+        plt.setp(f_ax1_4.get_yticklabels(), visible=False)
+        plt.setp(f_ax1_6.get_yticklabels(), visible=False)
+        plt.setp(f_ax3_6.get_yticklabels(), visible=False)
 
         fig.suptitle(f'{orthogroups[i]}', fontsize=24, x=0.15, y=1.88)
         fig.tight_layout()
