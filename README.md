@@ -25,15 +25,15 @@ Make a text file with each orthogroup on a new line. No headings and put it in t
 
 An example list is given - orthogroup_list_example.txt
 
-#### Run the script! Add the orthogroup list file you made after calling the script ####
+#### Run the script! Add the orthogroup list file you made after calling the script and the minTPM of genes to be included in the figure ####
 
 For a single orthogroup:
 
-`python Panel_figure_C4_gene_expression.py OG00XXXXX`
+`python Panel_figure_C4_gene_expression.py OG00XXXXX 0` 
 
 Or for multiple orthogroups:
 
-`python Panel_figure_C4_gene_expression.py your_list_of_orthogroups.txt`
+`python Panel_figure_C4_gene_expression.py your_list_of_orthogroups.txt 0`
 
 #### Figures ####
 
