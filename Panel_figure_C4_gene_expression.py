@@ -34,11 +34,21 @@ def maize_M_BS_chang(ax, orthogroup, orthogroup_fasta_file, zm_colour_dict, targ
     chang_df['M_mean_TPM'] = chang_df[['SRR354212_TPM', 'SRR354213_TPM']].mean(axis = 1)
     chang_df['BS_mean_TPM'] = chang_df[['SRR354214_TPM', 'SRR354215_TPM']].mean(axis = 1)
 
-    gray = 0.45
+    if plot_highly_expressed:
+        chang_df = chang_df[(chang_df['M_mean_TPM'] + chang_df['BS_mean_TPM']) > min_mean_TPM]
+        if len(chang_df) == 0:
+            chang_df = chang_df.append(pd.Series(0, index=chang_df.columns), ignore_index=True)
+            chang_df['Name'] = 'All genes'
+            zm_colour_dict['All genes'] = (1, 1, 1, 1)
+            orthogroup_location_dict['All genes'] = ''
+
+    gray = 0.1
     for i in maize_genes:
         if i not in zm_colour_dict.keys():
             zm_colour_dict[i] = (gray, gray, gray, 1.0)
-            gray = gray + 0.2
+            if gray > 0.95:
+                gray = 0.1
+            gray = gray + 0.05
     rgb_colours = []
     for i, row in chang_df.iterrows():
         rgb_colours.append(zm_colour_dict[row['Name']])
@@ -64,10 +74,6 @@ def maize_M_BS_chang(ax, orthogroup, orthogroup_fasta_file, zm_colour_dict, targ
 
     ax.set_ylabel('TPM')
     ax.legend()
-
-    #box = ax.get_position()
-   # ax.set_position([box.x0, box.y0, box.width * 0.4, box.height])
-
     ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
 
@@ -93,6 +99,17 @@ def maize_M_BS_tausta(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colour_dic
     tausta_df['BS_mean_sec_9_TPM'] = tausta_df[['GSM1311352_TPM', 'GSM1311353_TPM']].mean(axis = 1)
     tausta_df['BS_mean_sec_14_TPM'] = tausta_df[['GSM1311356_TPM', 'GSM1311357_TPM']].mean(axis = 1)
 
+    if plot_highly_expressed:
+        tausta_df = tausta_df[((tausta_df['M_mean_sec_4_TPM'] + tausta_df['BS_mean_sec_4_TPM']) > min_mean_TPM) |
+        ((tausta_df['M_mean_sec_9_TPM'] + tausta_df['BS_mean_sec_9_TPM']) > min_mean_TPM) |
+        ((tausta_df['M_mean_sec_14_TPM']+ tausta_df['BS_mean_sec_14_TPM']) > min_mean_TPM)]
+
+        if len(tausta_df) == 0:
+            tausta_df = tausta_df.append(pd.Series(0, index=tausta_df.columns), ignore_index=True)
+            tausta_df['Name'] = 'All genes'
+            zm_colour_dict['All genes'] = (1, 1, 1, 1)
+            orthogroup_location_dict['All genes'] = ''
+
     for i in maize_genes:
         if i not in zm_colour_dict.keys():
             zm_colour_dict[i] = (0.1, 0.3, 0.5, 1.0)
@@ -101,7 +118,7 @@ def maize_M_BS_tausta(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colour_dic
         rgb_colours.append(zm_colour_dict[row['Name']])
     tausta_df['colour'] = rgb_colours
 
-    lines = ["-","--","-.",":", (0, (1, 10)), (0, (1, 1)), (0, (5, 10)), (0, (5, 5)), (0, (5, 1)), (0, (3, 10, 1, 10)), (0, (3, 5, 1, 5)), (0, (3, 1, 1, 1)), (0, (3, 5, 1, 5, 1, 5)), (0, (3, 10, 1, 10, 1, 10)), (0, (3, 1, 1, 1, 1, 1))]
+    lines = ["-","--","-.",":"]
     tausta_df.sort_values(by=['colour'], inplace=True)
     tausta_df.reset_index(inplace=True)
     maize_tp_name = []
@@ -109,7 +126,12 @@ def maize_M_BS_tausta(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colour_dic
     count = 1
     for i, row in tausta_df.iterrows():
         maize_tp_name.append(orthogroup_location_dict[row['Name']] + ' ' + row['Name'])
-        if (tausta_df.iloc[i]['colour']) == (tausta_df.iloc[i-1]['colour']):
+        if i == 0:
+            line_styles.append(lines[0])
+            count = 1
+        elif (tausta_df.iloc[i]['colour']) == (tausta_df.iloc[i-1]['colour']):
+            if count == len(lines):
+                count = 0
             line_styles.append(lines[count])
             count+=1
         else:
@@ -171,6 +193,19 @@ def maize_M_BS_denton(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colour_dic
     denton_df['BS_mean_sec_4_TPM'] = denton_df[['SRR2186739_TPM', 'SRR2186720_TPM', 'SRR2186706_TPM']].mean(axis = 1)
     denton_df['BS_mean_sec_5_TPM'] = denton_df[['SRR2186741_TPM', 'SRR2186723_TPM', 'SRR2186708_TPM']].mean(axis = 1)
 
+    if plot_highly_expressed:
+        denton_df = denton_df[((denton_df['M_mean_sec_1_TPM'] + denton_df['BS_mean_sec_1_TPM']) > min_mean_TPM) |
+        ((denton_df['M_mean_sec_2_TPM'] + denton_df['BS_mean_sec_2_TPM']) > min_mean_TPM) |
+        ((denton_df['M_mean_sec_3_TPM'] + denton_df['BS_mean_sec_3_TPM']) > min_mean_TPM) |
+        ((denton_df['M_mean_sec_4_TPM'] + denton_df['BS_mean_sec_4_TPM']) > min_mean_TPM) |
+        ((denton_df['M_mean_sec_5_TPM'] + denton_df['BS_mean_sec_5_TPM']) > min_mean_TPM)]
+
+        if len(denton_df) == 0:
+            denton_df = denton_df.append(pd.Series(0, index=denton_df.columns), ignore_index=True)
+            denton_df['Name'] = 'All genes'
+            zm_colour_dict['All genes'] = (1, 1, 1, 1)
+            orthogroup_location_dict['All genes'] = ''
+
     for i in maize_genes:
         if i not in zm_colour_dict.keys():
             zm_colour_dict[i] = (0.1, 0.3, 0.5, 1.0)
@@ -179,7 +214,7 @@ def maize_M_BS_denton(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colour_dic
         rgb_colours.append(zm_colour_dict[row['Name']])
     denton_df['colour'] = rgb_colours
 
-    lines = ["-","--","-.",":", (0, (1, 10)), (0, (1, 1)), (0, (5, 10)), (0, (5, 5)), (0, (5, 1)), (0, (3, 10, 1, 10)), (0, (3, 5, 1, 5)), (0, (3, 1, 1, 1)), (0, (3, 5, 1, 5, 1, 5)), (0, (3, 10, 1, 10, 1, 10)), (0, (3, 1, 1, 1, 1, 1))]
+    lines = ["-","--","-.",":"]
     denton_df.sort_values(by=['colour'], inplace=True)
     denton_df.reset_index(inplace=True)
     maize_tp_name = []
@@ -187,7 +222,12 @@ def maize_M_BS_denton(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colour_dic
     count = 1
     for i, row in denton_df.iterrows():
         maize_tp_name.append(orthogroup_location_dict[row['Name']] + ' ' + row['Name'])
-        if (denton_df.iloc[i]['colour']) == (denton_df.iloc[i-1]['colour']):
+        if i == 0:
+            line_styles.append(lines[0])
+            count = 1
+        elif (denton_df.iloc[i]['colour']) == (denton_df.iloc[i-1]['colour']):
+            if count == len(lines):
+                count = 0
             line_styles.append(lines[count])
             count+=1
         else:
@@ -247,11 +287,21 @@ def sbicolor_M_BS_Oxford(ax, orthogroup, orthogroup_fasta_file, sb_colour_dict, 
     sbicolor_df['M_mean_TPM'] = sbicolor_df[['ERR1109878_TPM', 'ERR1109879_TPM', 'ERR1109880_TPM']].mean(axis=1)
     sbicolor_df['BS_mean_TPM'] = sbicolor_df[['ERR1109875_TPM', 'ERR1109876_TPM', 'ERR1109877_TPM']].mean(axis=1)
 
-    red = 0.25
+    if plot_highly_expressed:
+        sbicolor_df = sbicolor_df[((sbicolor_df['M_mean_TPM'] + sbicolor_df['BS_mean_TPM']) > min_mean_TPM)]
+        if len(sbicolor_df) == 0:
+            sbicolor_df = sbicolor_df.append(pd.Series(0, index=sbicolor_df.columns), ignore_index=True)
+            sbicolor_df['Name'] = 'All genes'
+            sb_colour_dict['All genes'] = (1, 1, 1, 1)
+            orthogroup_location_dict['All genes'] = ''
+
+    red = 0.1
     for i in sbicolor_genes:
         if i not in sb_colour_dict.keys():
             sb_colour_dict[i] = (red, 0, 0, 1.0)
-            red += 0.2
+            if red > 0.95:
+                red = 0.1
+            red += 0.05
 
     rgb_colours = []
     for i, row in sbicolor_df.iterrows():
@@ -299,11 +349,21 @@ def setaria_M_BS_john(ax, orthogroup, orthogroup_fasta_file, si_colour_dict, tar
     john_df['M_mean_TPM'] = john_df[['ERR385861_TPM', 'ERR385862_TPM', 'ERR385863_TPM']].mean(axis=1)
     john_df['BS_mean_TPM'] = john_df[['ERR385864_TPM', 'ERR385865_TPM', 'ERR385866_TPM']].mean(axis=1)
 
-    green = 0.25
+    if plot_highly_expressed:
+        john_df = john_df[((john_df['M_mean_TPM'] + john_df['BS_mean_TPM']) > min_mean_TPM)]
+        if len(john_df) == 0:
+            john_df = john_df.append(pd.Series(0, index=john_df.columns), ignore_index=True)
+            john_df['Name'] = 'All genes'
+            si_colour_dict['All genes'] = (1, 1, 1, 1)
+            orthogroup_location_dict['All genes'] = ''
+
+    green = 0.1
     for i in sitalica_genes:
         if i not in si_colour_dict.keys():
             si_colour_dict[i] = (0, green, 0, 1.0)
-            green += 0.2
+            if green > 0.95:
+                green = 0.1
+            green += 0.05
 
     rgb_colours = []
     for i, row in john_df.iterrows():
@@ -351,11 +411,21 @@ def pvirgatum_M_BS_rao(ax, orthogroup, orthogroup_fasta_file, pv_colour_dict, ta
     rao_df['M_mean_TPM'] = rao_df[['SRR3217256_TPM', 'SRR3217257_TPM']].mean(axis=1)
     rao_df['BS_mean_TPM'] = rao_df[['SRR3217892_TPM', 'SRR3217893_TPM']].mean(axis=1)
 
-    blue = 0.25
+    if plot_highly_expressed:
+        rao_df = rao_df[((rao_df['M_mean_TPM'] + rao_df['BS_mean_TPM']) > min_mean_TPM)]
+        if len(rao_df) == 0:
+            rao_df = rao_df.append(pd.Series(0, index=rao_df.columns), ignore_index=True)
+            rao_df['Name'] = 'All genes'
+            pv_colour_dict['All genes'] = (1, 1, 1, 1)
+            orthogroup_location_dict['All genes'] = ''
+
+    blue = 0.1
     for i in pvirgatum_genes:
         if i not in pv_colour_dict.keys():
-            pv_colour_dict[i] = (0, 0, blue, 1.0)
-            blue += 0.2
+            pv_colour_dict[i] = (0.5, 0.5, blue, 1.0)
+            if blue > 0.95:
+                blue = 0.1
+            blue += 0.01
 
     rgb_colours = []
     for i, row in rao_df.iterrows():
@@ -409,6 +479,17 @@ def rice_dev_vancampen(ax, orthogroup, orthogroup_fasta_file, os_colour_dict, ta
     vancampen_df['P4_mean_TPM'] = vancampen_df[['SRR2156309_TPM', 'SRR2156312_TPM']].mean(axis = 1)
     vancampen_df['P5_mean_TPM'] = vancampen_df[['SRR2156314_TPM', 'SRR2156315_TPM']].mean(axis = 1)
 
+    if plot_highly_expressed:
+        vancampen_df = vancampen_df[(vancampen_df['P3_mean_TPM'] > min_mean_TPM) |
+        (vancampen_df['P4_mean_TPM'] > min_mean_TPM) |
+        (vancampen_df['P5_mean_TPM'] > min_mean_TPM) ]
+
+        if len(vancampen_df) == 0:
+            vancampen_df = vancampen_df.append(pd.Series(0, index=vancampen_df.columns), ignore_index=True)
+            vancampen_df['Name'] = 'All genes'
+            os_colour_dict['All genes'] = (1, 1, 1, 1)
+            orthogroup_location_dict['All genes'] = ''
+
     for i in rice_genes:
         if i not in os_colour_dict.keys():
             os_colour_dict[i] = (0.5, 0.5, 0.5, 1.0)
@@ -417,15 +498,21 @@ def rice_dev_vancampen(ax, orthogroup, orthogroup_fasta_file, os_colour_dict, ta
         rgb_colours.append(os_colour_dict[row['Name']])
     vancampen_df['colour'] = rgb_colours
 
-    lines = ["-","--","-.",":", (0, (1, 10)), (0, (1, 1)), (0, (5, 10)), (0, (5, 5)), (0, (5, 1)), (0, (3, 10, 1, 10)), (0, (3, 5, 1, 5)), (0, (3, 1, 1, 1)), (0, (3, 5, 1, 5, 1, 5)), (0, (3, 10, 1, 10, 1, 10)), (0, (3, 1, 1, 1, 1, 1))]
+    lines = ["-","--","-.",":"]
     vancampen_df.sort_values(by=['colour'], inplace=True)
     vancampen_df.reset_index(inplace=True)
     gene_tp_name = []
     line_styles = []
     count = 1
+
     for i, row in vancampen_df.iterrows():
         gene_tp_name.append(orthogroup_location_dict[row['Name']] + ' ' + row['Name'])
-        if (vancampen_df.iloc[i]['colour']) == (vancampen_df.iloc[i-1]['colour']):
+        if i == 0:
+            line_styles.append(lines[0])
+            count = 1
+        elif (vancampen_df.iloc[i]['colour']) == (vancampen_df.iloc[i-1]['colour']):
+            if count == len(lines):
+                count = 0
             line_styles.append(lines[count])
             count+=1
         else:
@@ -484,19 +571,36 @@ def arabidopsis_dev_woo(ax, orthogroup, orthogroup_fasta_file, targetp_dict, at_
     woo_df['28_mean_TPM'] = woo_df[['SRR2079783_TPM', 'SRR2079797_TPM']].mean(axis = 1)
     woo_df['30_mean_TPM'] = woo_df[['SRR2079784_TPM', 'SRR2079798_TPM']].mean(axis = 1)
 
-    colours = [(164/255,76/255,64/255,1.0), (133/255,114/255,100/255,1.0), (64/255,70/255,54/255,1.0), (15/2,20/255,12/255,1.0),(74/255,94/255,106/255,1.0)]
-    count = 0
+    if plot_highly_expressed:
+        woo_df = woo_df[(woo_df['4_mean_TPM'] > min_mean_TPM) | (woo_df['6_mean_TPM'] > min_mean_TPM) | (woo_df['8_mean_TPM'] > min_mean_TPM) |
+        (woo_df['10_mean_TPM'] > min_mean_TPM) | (woo_df['12_mean_TPM'] > min_mean_TPM) | (woo_df['14_mean_TPM'] > min_mean_TPM) |
+        (woo_df['16_mean_TPM'] > min_mean_TPM) | (woo_df['18_mean_TPM'] > min_mean_TPM) | (woo_df['20_mean_TPM'] > min_mean_TPM) |
+        (woo_df['22_mean_TPM'] > min_mean_TPM) | (woo_df['24_mean_TPM'] > min_mean_TPM) | (woo_df['26_mean_TPM'] > min_mean_TPM) |
+        (woo_df['28_mean_TPM'] > min_mean_TPM) | (woo_df['30_mean_TPM'] > min_mean_TPM)]
+
+        if len(woo_df) == 0:
+            woo_df = woo_df.append(pd.Series(0, index=woo_df.columns), ignore_index=True)
+            woo_df['Name'] = 'All genes'
+            at_colour_dict['All genes'] = (1, 1, 1, 1)
+            orthogroup_location_dict['All genes'] = ''
+
+    # colours = [(164/255,76/255,64/255,1.0), (133/255,114/255,100/255,1.0), (64/255,70/255,54/255,1.0), (15/2,20/255,12/255,1.0),(74/255,94/255,106/255,1.0)]
+    # count = 0
+    # for i in arabidopsis_genes:
+    #     if i not in at_colour_dict.keys():
+    #         at_colour_dict[i] = colours[count]
+    #         count += 1
+
     for i in arabidopsis_genes:
         if i not in at_colour_dict.keys():
-            at_colour_dict[i] = colours[count]
-            count += 1
+            at_colour_dict[i] = (0.5, 0.5, 0.5, 1.0)
 
     rgb_colours = []
     for i, row in woo_df.iterrows():
         rgb_colours.append(at_colour_dict[row['Name']])
     woo_df['colour'] = rgb_colours
 
-    lines = ["-","--","-.",":", (0, (1, 10)), (0, (1, 1)), (0, (5, 10)), (0, (5, 5)), (0, (5, 1)), (0, (3, 10, 1, 10)), (0, (3, 5, 1, 5)), (0, (3, 1, 1, 1)), (0, (3, 5, 1, 5, 1, 5)), (0, (3, 10, 1, 10, 1, 10)), (0, (3, 1, 1, 1, 1, 1))]
+    lines = ["-","--","-.",":"]
     woo_df.sort_values(by=['colour'], inplace=True)
     woo_df.reset_index(inplace=True)
     gene_tp_name = []
@@ -504,7 +608,12 @@ def arabidopsis_dev_woo(ax, orthogroup, orthogroup_fasta_file, targetp_dict, at_
     count = 1
     for i, row in woo_df.iterrows():
         gene_tp_name.append(orthogroup_location_dict[row['Name']] + ' ' + row['Name'])
-        if (woo_df.iloc[i]['colour']) == (woo_df.iloc[i-1]['colour']):
+        if i == 0:
+            line_styles.append(lines[0])
+            count = 1
+        elif (woo_df.iloc[i]['colour']) == (woo_df.iloc[i-1]['colour']):
+            if count == len(lines):
+                count = 0
             line_styles.append(lines[count])
             count+=1
         else:
@@ -559,6 +668,17 @@ def maize_foliar_husk_wang(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colou
     wang_df['H_I'] = wang_df['SRR942913_TPM']
     wang_df['H_E'] = wang_df['SRR942914_TPM']
 
+    if plot_highly_expressed:
+        wang_df = wang_df[(wang_df['F_AM_P1_P2'] > min_mean_TPM) | (wang_df['F_P3_P4'] > min_mean_TPM) | (wang_df['F_P5'] > min_mean_TPM) |
+                   (wang_df['F_I'] > min_mean_TPM) | (wang_df['F_E'] > min_mean_TPM) | (wang_df['H_P1_P2'] > min_mean_TPM) |
+                   (wang_df['H_P3_P4'] > min_mean_TPM) | (wang_df['H_P5'] > min_mean_TPM) | (wang_df['H_I'] > min_mean_TPM) |
+                   (wang_df['H_E'] > min_mean_TPM)]
+    if len(wang_df) == 0:
+        wang_df = wang_df.append(pd.Series(0, index=wang_df.columns), ignore_index=True)
+        wang_df['Name'] = 'All genes'
+        zm_colour_dict['All genes'] = (1, 1, 1, 1)
+        orthogroup_location_dict['All genes'] = ''
+
     for i in maize_genes:
         if i not in zm_colour_dict.keys():
             zm_colour_dict[i] = (0.5, 0.5, 0.5, 1.0)
@@ -567,7 +687,7 @@ def maize_foliar_husk_wang(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colou
         rgb_colours.append(zm_colour_dict[row['Name']])
     wang_df['colour'] = rgb_colours
 
-    lines = ["-","--","-.",":", (0, (1, 10)), (0, (1, 1)), (0, (5, 10)), (0, (5, 5)), (0, (5, 1)), (0, (3, 10, 1, 10)), (0, (3, 5, 1, 5)), (0, (3, 1, 1, 1)), (0, (3, 5, 1, 5, 1, 5)), (0, (3, 10, 1, 10, 1, 10)), (0, (3, 1, 1, 1, 1, 1))]
+    lines = ["-","--","-.",":"]
     wang_df.sort_values(by=['colour'], inplace=True)
     wang_df.reset_index(inplace=True)
     maize_tp_name = []
@@ -575,7 +695,12 @@ def maize_foliar_husk_wang(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colou
     count = 1
     for i, row in wang_df.iterrows():
         maize_tp_name.append(orthogroup_location_dict[row['Name']] + ' ' + row['Name'])
-        if (wang_df.iloc[i]['colour']) == (wang_df.iloc[i-1]['colour']):
+        if i == 0:
+            line_styles.append(lines[0])
+            count = 1
+        elif (wang_df.iloc[i]['colour']) == (wang_df.iloc[i-1]['colour']):
+            if count == len(lines):
+                count = 0
             line_styles.append(lines[count])
             count+=1
         else:
@@ -699,11 +824,13 @@ def gynandropsis_M_BS_Aubry(ax, orthogroup, orthogroup_fasta_file, targetp_dict,
     aubry_df = pd.read_csv('data/expression_data/gynandropsis_BS_M_Aubry_2014.csv')
     aubry_df = aubry_df.loc[aubry_df['Accession'].isin(arabidopsis_genes)]
 
-    gray = 0.25
+    gray = 0.1
     for i in arabidopsis_genes:
         if i not in at_colour_dict.keys():
             at_colour_dict[i] = (gray, gray, gray, 1.0)
-            gray = gray + 0.2
+            if gray > 0.90:
+                gray = 0.1
+            gray = gray + 0.1
     rgb_colours = []
     for i, row in aubry_df.iterrows():
         rgb_colours.append(at_colour_dict[row['Accession']])
@@ -800,9 +927,6 @@ def get_species_genes(fasta_file, species_string, delimiter, delimiter_position)
     return(genes)
 
 
-# In[15]:
-
-
 def get_rice_orthologues(orthogroup, species):
     for file in glob.glob(f'data/orthologues/Orthologues_Osativa_323_v7.0.protein_primaryTranscriptOnly/*{species}*'):
         df = pd.read_csv(file, sep='\t')
@@ -813,7 +937,7 @@ def get_rice_orthologues(orthogroup, species):
         global colour_counter
         colour_counter = len(df)
 
-        return(df)
+        return df
 
 
 # In[16]:
@@ -1024,6 +1148,13 @@ else:
     with open(orthogroup_list) as orthogroup_file:
         for line in orthogroup_file:
             orthogroups.append(line.strip())
+
+global plot_highly_expressed
+plot_highly_expressed = False
+if 'large' in sys.argv[2]:
+    plot_highly_expressed = True
+    global min_mean_TPM
+    min_mean_TPM = 20
 
 
 orthogroup_fasta_files = []
