@@ -1165,11 +1165,9 @@ else:
             orthogroups.append(line.strip())
 
 global plot_highly_expressed
-plot_highly_expressed = False
-if 'large' in sys.argv[2]:
-    plot_highly_expressed = True
-    global min_mean_TPM
-    min_mean_TPM = 10000
+plot_highly_expressed = True
+global min_mean_TPM
+min_mean_TPM = int(sys.argv[2])
 
 
 orthogroup_fasta_files = []
