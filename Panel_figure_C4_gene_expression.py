@@ -673,11 +673,11 @@ def maize_foliar_husk_wang(ax1, ax2, orthogroup, orthogroup_fasta_file, zm_colou
                    (wang_df['F_I'] > min_mean_TPM) | (wang_df['F_E'] > min_mean_TPM) | (wang_df['H_P1_P2'] > min_mean_TPM) |
                    (wang_df['H_P3_P4'] > min_mean_TPM) | (wang_df['H_P5'] > min_mean_TPM) | (wang_df['H_I'] > min_mean_TPM) |
                    (wang_df['H_E'] > min_mean_TPM)]
-    if len(wang_df) == 0:
-        wang_df = wang_df.append(pd.Series(0, index=wang_df.columns), ignore_index=True)
-        wang_df['Name'] = 'All genes'
-        zm_colour_dict['All genes'] = (1, 1, 1, 1)
-        orthogroup_location_dict['All genes'] = ''
+        if len(wang_df) == 0:
+            wang_df = wang_df.append(pd.Series(0, index=wang_df.columns), ignore_index=True)
+            wang_df['Name'] = 'All genes'
+            zm_colour_dict['All genes'] = (1, 1, 1, 1)
+            orthogroup_location_dict['All genes'] = ''
 
     for i in maize_genes:
         if i not in zm_colour_dict.keys():
@@ -768,6 +768,16 @@ def flaveria_C3_C4_Gowick(ax, orthogroup, orthogroup_fasta_file, targetp_dict, a
     gowick_df['F_trinervia_summed_rpm'] = gowick_df['F_trinervia_rpm'].groupby(gowick_df['colour']).transform('sum')
     gowick_df['F_bidentis_summed_rpm'] = gowick_df['F_bidentis_rpm'].groupby(gowick_df['colour']).transform('sum')
 
+    if plot_highly_expressed:
+        gowick_df = gowick_df[(gowick_df['F_pringlei_summed_rpm'] > min_mean_TPM) | (gowick_df['F_robusta_summed_rpm'] > min_mean_TPM) |
+                    (gowick_df['F_ramosissima_summed_rpm'] > min_mean_TPM) |
+                   (gowick_df['F_trinervia_summed_rpm'] > min_mean_TPM) | (gowick_df['F_bidentis_summed_rpm'] > min_mean_TPM)]
+        if len(gowick_df) == 0:
+            gowick_df = gowick_df.append(pd.Series(0, index=gowick_df.columns), ignore_index=True)
+            gowick_df['Locus'] = 'All genes'
+            gowick_df['colour'] = [(1, 1, 1, 1)]
+            orthogroup_location_dict['All genes'] = ''
+
     cumval_pri = 0
     cumval_rob = 0
     cumval_ram = 0
@@ -838,6 +848,15 @@ def gynandropsis_M_BS_Aubry(ax, orthogroup, orthogroup_fasta_file, targetp_dict,
 
     aubry_df['M_summed_mean'] = aubry_df['Mean M'].groupby(aubry_df['colour']).transform('sum')
     aubry_df['BS_summed_mean'] = aubry_df['Mean BS'].groupby(aubry_df['colour']).transform('sum')
+
+    if plot_highly_expressed:
+        aubry_df = aubry_df[(aubry_df['M_summed_mean'] > min_mean_TPM) | (aubry_df['BS_summed_mean'] > min_mean_TPM)]
+
+        if len(aubry_df) == 0:
+            aubry_df = aubry_df.append(pd.Series(0, index=aubry_df.columns), ignore_index=True)
+            aubry_df['Accession'] = 'All genes'
+            aubry_df['colour'] = [(1, 1, 1, 1)]
+            orthogroup_location_dict['All genes'] = ''
 
     cumval_M = 0
     cumval_BS = 0
@@ -1048,15 +1067,11 @@ def panel_fig(orthogroups, orthogroup_fasta_files, orthogroup_targetP_files):
         pv_colour_dict = get_species_colour_dict('Pvirgatum', zm_colour_dict, orthogroups[i], '.', 2)
 
         at_colour_dict = get_species_colour_dict('Athaliana', zm_colour_dict, orthogroups[i], '.', 1)
-
-
         targetp_dict = make_targetp_dict(orthogroup_targetP_files[i])
 
         plt.rcParams.update({'font.size': 10})
         fig = plt.figure(constrained_layout=False, figsize=(20, 12))
         spec = gridspec.GridSpec(ncols=7, nrows=7, figure=fig)
-
-
 
         f_ax1_1 = fig.add_subplot(spec[0, 0])
         f_ax1_3 = fig.add_subplot(spec[0,2], sharey=f_ax1_1)
@@ -1154,7 +1169,7 @@ plot_highly_expressed = False
 if 'large' in sys.argv[2]:
     plot_highly_expressed = True
     global min_mean_TPM
-    min_mean_TPM = 20
+    min_mean_TPM = 10000
 
 
 orthogroup_fasta_files = []
