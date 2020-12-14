@@ -1167,8 +1167,11 @@ else:
 global plot_highly_expressed
 plot_highly_expressed = True
 global min_mean_TPM
-min_mean_TPM = int(sys.argv[2])
-
+arg_names = sys.argv
+if len(arg_names) > 2:
+    min_mean_TPM = int(sys.argv[2])
+else:
+    min_mean_TPM = 0
 
 orthogroup_fasta_files = []
 orthogroup_targetP_files = []
