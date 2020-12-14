@@ -25,15 +25,23 @@ Make a text file with each orthogroup on a new line. No headings and put it in t
 
 An example list is given - orthogroup_list_example.txt
 
-#### Run the script! Add the orthogroup list file you made after calling the script and the minTPM of genes to be included in the figure ####
+#### Run the script! Add the orthogroup list file you made after calling the script ####
 
 For a single orthogroup:
 
-`python Panel_figure_C4_gene_expression.py OG00XXXXX 0` 
+`python Panel_figure_C4_gene_expression.py OG00XXXXX` 
 
 Or for multiple orthogroups:
 
-`python Panel_figure_C4_gene_expression.py your_list_of_orthogroups.txt 0`
+`python Panel_figure_C4_gene_expression.py your_list_of_orthogroups.txt`
+
+#### Optional: Specify a minTPM, this may be useful for very large orthogroups ####
+
+Run the script, same as above but specify a minTPM for genes to be included in the plot and legend. The deafault is 0 (i.e. include all data points)
+
+e.g. to set a minTPM of 100:
+
+`python Panel_figure_C4_gene_expression.py OG00XXXXX 100`
 
 #### Figures ####
 
